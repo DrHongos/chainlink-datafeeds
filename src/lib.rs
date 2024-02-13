@@ -55,13 +55,13 @@ pub struct Oracle {
     pub compare_offchain: Option<String>,
     pub contract_address: Option<Address>,
     pub contract_type: Option<String>,
-    pub contract_version: Option<u8>,
-    pub decimal_places: Option<u8>,
+    pub contract_version: Option<u32>,
+    pub decimal_places: Option<u32>,
     pub ens: Option<String>,
-    pub format_decimal_places: Option<u8>,
+    pub format_decimal_places: Option<u32>,
     pub health_price: Option<String>,
     pub heartbeat: Option<u32>,
-    pub history: bool,
+    pub history: Option<bool>,
     pub multiply: Option<String>,
     pub name: Option<String>,
     pub pair: Vec<String>,
@@ -76,8 +76,8 @@ pub struct Oracle {
     pub decimals: Option<u8>
 }
 
-/// Main storage of data feeds oracles
-/// Different types of feeds (see feed_category) are mixed in this index
+/// Collection data feeds oracles for a chain
+// Different types of feeds are mixed in this index (see feed_category)
 #[derive(Debug)]
 pub struct OraclesIndex {
     pub chain: Chain,
@@ -85,7 +85,7 @@ pub struct OraclesIndex {
 }
 
 impl OraclesIndex {
-    /// Returns a struct loaded with chain specific indexes for prices feeds    
+    /// Returns a struct loaded with chain specific oracles    
     pub async fn load_reference_feeds(chain: Chain) -> Self {
         let url = get_references_url(chain.named().unwrap()).expect("Error getting url of feeds");
         //println!("Populating information with {url}");
